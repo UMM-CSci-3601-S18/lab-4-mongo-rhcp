@@ -87,7 +87,8 @@ public class UserRequestHandler {
                     String company = dbO.getString("company");
                     String email = dbO.getString("email");
 
-                    System.err.println("Adding new user [name=" + name + ", age=" + age + " company=" + company + " email=" + email + ']');
+                    System.err.println("Adding new user [name=" + name + ", age=" + age +
+                        " company=" + company + " email=" + email + ']');
                     return userController.addNewUser(name, age, company, email);
                 }
                 catch(NullPointerException e)
