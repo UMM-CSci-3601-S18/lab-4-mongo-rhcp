@@ -6,6 +6,8 @@ import spark.Request;
 import spark.Response;
 import umm3601.user.UserController;
 import umm3601.user.UserRequestHandler;
+import umm3601.todo.TodoController;
+import umm3601.todo.TodoRequestHandler;
 
 import java.io.IOException;
 
@@ -15,15 +17,19 @@ import static spark.debug.DebugScreen.enableDebugScreen;
 
 public class Server {
     private static final String userDatabaseName = "dev";
+    private static final String todoDatabaseName = "dev";
     private static final int serverPort = 4567;
 
     public static void main(String[] args) throws IOException {
 
         MongoClient mongoClient = new MongoClient();
         MongoDatabase userDatabase = mongoClient.getDatabase(userDatabaseName);
+        MongoDatabase todoDatabase = mongoClient.getDatabase(todoDatabaseName);
 
         UserController userController = new UserController(userDatabase);
         UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
+        TodoController todoController = new TodoController(todoDatabase);
+        TodoRequestHandler todoRequestHandler = new TodoRequestHandler(todoController);
 
         //Configure Spark
         port(serverPort);
@@ -66,6 +72,9 @@ public class Server {
         get("api/users", userRequestHandler::getUsers);
         get("api/users/:id", userRequestHandler::getUserJSON);
         post("api/users/new", userRequestHandler::addNewUser);
+        get("api/todos", todoRequestHandler::getTodos);
+        get("api/todos/:id", todoRequestHandler::getTodoJSON);
+        post("api/todos/new", todoRequestHandler::addNewTodo);
 
         // An example of throwing an unhandled exception so you can see how the
         // Java Spark debugger displays errors like this.
