@@ -30,7 +30,7 @@ export class AddTodoComponent {
         //Here we clear all the fields, there's probably a better way
         //of doing this could be with forms or something else
         this.newTodoCategory = null;
-        this.newTodoStatus = null;
+        this.newTodoStatus = false; // Starts as false because we are working with binary checkbox instead of text-field
         this.newTodoOwner = null;
         this.newTodoBody = null;
 
