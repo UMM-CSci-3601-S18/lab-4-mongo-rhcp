@@ -144,8 +144,8 @@ describe('Todo list service: ', () => {
         };
 
         todoListService.addNewTodo(newTodo.category, newTodo.status, newTodo.category, newTodo.body).subscribe(
-            id => {
-                expect(id).toBe(Heracles_id);
+            _id => {
+                expect(_id).toBe(Heracles_id);
             }
         );
 
