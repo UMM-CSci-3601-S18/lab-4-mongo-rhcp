@@ -65,10 +65,10 @@ export class TodoListService {
     }
 
     addNewTodo(category: string, status: boolean, owner : string, body : string): Observable<Boolean> {
-        const contents = {category:category, status:status, owner:owner, body:body};
+        const contents = {owner:owner, status:status, body:body, category:category};
         console.log(contents);
 
-        //Send post request to add a new todo with the todo data as the contents with specified headers.
+        //Send post request to add a new to-do with the to-do data as the contents with specified headers.
         return this.http.post<Boolean>(this.todoUrl + "/new", contents);
     }
 }
