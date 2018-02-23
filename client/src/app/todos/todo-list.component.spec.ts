@@ -100,13 +100,7 @@ describe('Todo list', () => {
     it('has two todos of category \'Frogs\'', () => {
         expect(todoList.todos.filter((todo: Todo) => todo.category === 'Frogs').length).toBe(2);
     });
-    it('todo list filters by owner', () => {
-        expect(todoList.filteredTodos.length).toBe(4);
-        todoList.todoOwner = 'a';
-        const a: Observable<Todo[]> = todoList.refreshTodos();
-        a.do(x => Observable.of(x))
-            .subscribe(x => expect(todoList.filteredTodos.length).toBe(3));
-    });
+
 
     it('todo list filters by status', () => {
         expect(todoList.filteredTodos.length).toBe(4);
@@ -117,21 +111,21 @@ describe('Todo list', () => {
             .subscribe(x => expect(todoList.filteredTodos.length).toBe(2));
     });
 
-    it('todo list filters by owner and status', () => {
+    it('todo list filters by status and content', () => {
         expect(todoList.filteredTodos.length).toBe(4);
         todoList.CheckTrue = false;
         todoList.CheckFalse = true;
-        todoList.todoOwner = 'y';
+        todoList.todoBody = 'oup';
         const a: Observable<Todo[]> = todoList.refreshTodos();
         a.do(x => Observable.of(x))
             .subscribe(x => expect(todoList.filteredTodos.length).toBe(1));
     });
 
-    it('todo list filters by owner, content, and status', () => {
+    it('todo list filters by category, content, and status', () => {
         expect(todoList.filteredTodos.length).toBe(4);
         todoList.CheckTrue = true;
         todoList.CheckFalse = false;
-        todoList.todoOwner = 'l';
+        todoList.todoCategory = 'Frogs';
         todoList.todoBody = 'oup';
         const a: Observable<Todo[]> = todoList.refreshTodos();
         a.do(x => Observable.of(x))
