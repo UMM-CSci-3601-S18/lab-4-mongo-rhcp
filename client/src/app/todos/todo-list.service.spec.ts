@@ -2,42 +2,48 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {TestBed} from '@angular/core/testing';
 import {HttpClient} from '@angular/common/http';
 
-import {User} from './user';
-import {UserListService} from './user-list.service';
+import {Todo} from './todo';
+import {TodoListService} from './todo-list.service';
 
-describe('User list service: ', () => {
-    // A small collection of test users
-    const testUsers: User[] = [
+describe('Todo list service: ', () => {
+    // A small collection of test todos
+    const testTodos: Todo[] = [
         {
-            _id: 'chris_id',
-            name: 'Chris',
-            age: 25,
-            company: 'UMM',
-            email: 'chris@this.that'
+            _id: '46s4fgh19s8gh54981564sh',
+            owner: 'Socrates',
+            status: true,
+            body: ': And does the same apply to this as the previous ones: it is not ' +
+            'because it is a loved thing that it is loved by those who love it, but it is a ' +
+            'loved thing because it is loved?',
+            category: 'Euthyphro',
         },
         {
-            _id: 'pat_id',
-            name: 'Pat',
-            age: 37,
-            company: 'IBM',
-            email: 'pat@something.com'
+            _id: '56s2fg2sdf8g489s4y9s29hh',
+            owner: 'Dionysus',
+            status: false,
+            body: 'I can\'t describe it. \n' +
+            'But yet I\'ll tell you in a riddling way. \n' +
+            'Have you e\'er felt a sudden lust for soup?',
+            category: 'Frogs',
         },
         {
-            _id: 'jamie_id',
-            name: 'Jamie',
-            age: 37,
-            company: 'Frogs, Inc.',
-            email: 'jamie@frogs.com'
+            _id: 'g89189s1g6g179s8g4s6d8g54s',
+            owner: 'Descartes',
+            status: false,
+            body: 'Then without doubt I exist also ' +
+            'if he deceives me, and let him deceive me as much as he will, he can ' +
+            'never cause me to be nothing so long as I think that I am something. ',
+            category: 'Meditations',
         }
     ];
-    const mUsers: User[] = testUsers.filter(user =>
-        user.company.toLowerCase().indexOf('m') !== -1
+    const mTodos: Todo[] = testTodos.filter(todo =>
+        todo.owner.toLowerCase().indexOf('m') !== -1
     );
 
-    // We will need some url information from the userListService to meaningfully test company filtering;
+    // We will need some url information from the todoListService to meaningfully test owner filtering;
     // https://stackoverflow.com/questions/35987055/how-to-write-unit-testing-for-angular-2-typescript-for-private-methods-with-ja
-    let userListService: UserListService;
-    let currentlyImpossibleToGenerateSearchUserUrl: string;
+    let todoListService: TodoListService;
+    let currentlyImpossibleToGenerateSearchTodoUrl: string;
 
     // These are used to mock the HTTP requests so that we (a) don't have to
     // have the server running and (b) we can check exactly which HTTP
@@ -54,7 +60,7 @@ describe('User list service: ', () => {
         httpTestingController = TestBed.get(HttpTestingController);
         // Construct an instance of the service with the mock
         // HTTP client.
-        userListService = new UserListService(httpClient);
+        todoListService = new TodoListService(httpClient);
     });
 
     afterEach(() => {
@@ -62,90 +68,90 @@ describe('User list service: ', () => {
         httpTestingController.verify();
     });
 
-    it('getUsers() calls api/users', () => {
-        // Assert that the users we get from this call to getUsers()
-        // should be our set of test users. Because we're subscribing
-        // to the result of getUsers(), this won't actually get
+    it('getTodos() calls api/todos', () => {
+        // Assert that the todos we get from this call to getTodos()
+        // should be our set of test todos. Because we're subscribing
+        // to the result of getTodos(), this won't actually get
         // checked until the mocked HTTP request "returns" a response.
-        // This happens when we call req.flush(testUsers) a few lines
+        // This happens when we call req.flush(testTodos) a few lines
         // down.
-        userListService.getUsers().subscribe(
-            users => expect(users).toBe(testUsers)
+        todoListService.getTodos().subscribe(
+            todos => expect(todos).toBe(testTodos)
         );
 
         // Specify that (exactly) one request will be made to the specified URL.
-        const req = httpTestingController.expectOne(userListService.baseUrl);
+        const req = httpTestingController.expectOne(todoListService.baseUrl);
         // Check that the request made to that URL was a GET request.
         expect(req.request.method).toEqual('GET');
         // Specify the content of the response to that request. This
         // triggers the subscribe above, which leads to that check
         // actually being performed.
-        req.flush(testUsers);
+        req.flush(testTodos);
     });
 
-    it('getUsers(userCompany) adds appropriate param string to called URL', () => {
-        userListService.getUsers('m').subscribe(
-            users => expect(users).toEqual(mUsers)
+    it('getTodos(todoOwner) adds appropriate param string to called URL', () => {
+        todoListService.getTodos('m').subscribe(
+            todos => expect(todos).toEqual(mTodos)
         );
 
-        const req = httpTestingController.expectOne(userListService.baseUrl + '?company=m&');
+        const req = httpTestingController.expectOne(todoListService.baseUrl + '?owner=m&');
         expect(req.request.method).toEqual('GET');
-        req.flush(mUsers);
+        req.flush(mTodos);
     });
 
-    it('filterByCompany(userCompany) deals appropriately with a URL that already had a company', () => {
-        currentlyImpossibleToGenerateSearchUserUrl = userListService.baseUrl + '?company=f&something=k&';
-        userListService['userUrl'] = currentlyImpossibleToGenerateSearchUserUrl;
-        userListService.filterByCompany('m');
-        expect(userListService['userUrl']).toEqual(userListService.baseUrl + '?something=k&company=m&');
+    it('filterByOwner(todoOwner) deals appropriately with a URL that already had a owner', () => {
+        currentlyImpossibleToGenerateSearchTodoUrl = todoListService.baseUrl + '?owner=f&something=k&';
+        todoListService['todoUrl'] = currentlyImpossibleToGenerateSearchTodoUrl;
+        todoListService.filterByOwner('m');
+        expect(todoListService['todoUrl']).toEqual(todoListService.baseUrl + '?something=k&owner=m&');
     });
 
-    it('filterByCompany(userCompany) deals appropriately with a URL that already had some filtering, but no company', () => {
-        currentlyImpossibleToGenerateSearchUserUrl = userListService.baseUrl + '?something=k&';
-        userListService['userUrl'] = currentlyImpossibleToGenerateSearchUserUrl;
-        userListService.filterByCompany('m');
-        expect(userListService['userUrl']).toEqual(userListService.baseUrl + '?something=k&company=m&');
+    it('filterByOwner(todoOwner) deals appropriately with a URL that already had some filtering, but no owner', () => {
+        currentlyImpossibleToGenerateSearchTodoUrl = todoListService.baseUrl + '?something=k&';
+        todoListService['todoUrl'] = currentlyImpossibleToGenerateSearchTodoUrl;
+        todoListService.filterByOwner('m');
+        expect(todoListService['todoUrl']).toEqual(todoListService.baseUrl + '?something=k&owner=m&');
     });
 
-    it('filterByCompany(userCompany) deals appropriately with a URL has the keyword company, but nothing after the =', () => {
-        currentlyImpossibleToGenerateSearchUserUrl = userListService.baseUrl + '?company=&';
-        userListService['userUrl'] = currentlyImpossibleToGenerateSearchUserUrl;
-        userListService.filterByCompany('');
-        expect(userListService['userUrl']).toEqual(userListService.baseUrl + '');
+    it('filterByOwner(todoOwner) deals appropriately with a URL has the keyword owner, but nothing after the =', () => {
+        currentlyImpossibleToGenerateSearchTodoUrl = todoListService.baseUrl + '?owner=&';
+        todoListService['todoUrl'] = currentlyImpossibleToGenerateSearchTodoUrl;
+        todoListService.filterByOwner('');
+        expect(todoListService['todoUrl']).toEqual(todoListService.baseUrl + '');
     });
 
-    it('getUserById() calls api/users/id', () => {
-        const targetUser: User = testUsers[1];
-        const targetId: string = targetUser._id;
-        userListService.getUserById(targetId).subscribe(
-            user => expect(user).toBe(targetUser)
+    it('getTodoById() calls api/todos/id', () => {
+        const targetTodo: Todo = testTodos[1];
+        const targetId: string = targetTodo._id;
+        todoListService.getTodoById(targetId).subscribe(
+            todo => expect(todo).toBe(targetTodo)
         );
 
-        const expectedUrl: string = userListService.baseUrl + '/' + targetId;
+        const expectedUrl: string = todoListService.baseUrl + '/' + targetId;
         const req = httpTestingController.expectOne(expectedUrl);
         expect(req.request.method).toEqual('GET');
-        req.flush(targetUser);
+        req.flush(targetTodo);
     });
 
-    it('adding a user calls api/users/new', () => {
-        const jesse_id = { '$oid': 'jesse_id' };
-        const newUser: User = {
-            _id: '',
-            name: 'Jesse',
-            age: 72,
-            company: 'Smithsonian',
-            email: 'jesse@stuff.com'
+    it('adding a todo calls api/todos/new', () => {
+        const Heracles_id = { '$oid': 'Heracles_id' };
+        const newTodo: Todo = {
+            _id: '5189ser4y56se1g89sg614',
+            owner: 'Heracles',
+            status: true,
+            body: 'Soup! Zeus-a-mercy, yes, ten thousand times.',
+            category: 'Frogs',
         };
 
-        userListService.addNewUser(newUser).subscribe(
+        todoListService.addNewTodo(newTodo.category, newTodo.status, newTodo.category, newTodo.body).subscribe(
             id => {
-                expect(id).toBe(jesse_id);
+                expect(id).toBe(Heracles_id);
             }
         );
 
-        const expectedUrl: string = userListService.baseUrl + '/new';
+        const expectedUrl: string = todoListService.baseUrl + '/new';
         const req = httpTestingController.expectOne(expectedUrl);
         expect(req.request.method).toEqual('POST');
-        req.flush(jesse_id);
+        req.flush(Heracles_id);
     });
 });
