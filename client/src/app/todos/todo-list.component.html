@@ -9,34 +9,64 @@
     <div flex-gt-sm="80" flex-offset-gt-sm="10">
         <mat-card>
             <mat-card-title id="todo-list-title">Todos</mat-card-title>
+
             <mat-divider></mat-divider>
             <mat-card-content>
                 <mat-form-field>
-                    <input matInput id="todoCategory" #input type="text" placeholder="Filter by category" (input)="todoCategory = $event.target.value">
+                    <input matInput id="todoOwner" #input placeholder="Filter by owner"
+                           (input)="todoOwner = $event.target.value">
                 </mat-form-field>
+
                 <mat-form-field>
-                    <input matInput id="todoStatus" #input type="number" placeholder="Filter by status" (input)="todoStatus = $event.target.value">
+                    <input matInput id="todoCategory" #input placeholder="Filter by category"
+                           (input)="todoCategory = $event.target.value">
                 </mat-form-field>
+
                 <mat-form-field>
-                    <input matInput id="todoOwner" #input type="search" placeholder="Search for owner" [(ngModel)]="todoOwner" />
-                    <button mat-button id="ownerClearSearch" type="button" *ngIf="todoOwner" matSuffix mat-icon-button aria-label="clear" (click)="todoOwner='';loadService()">
-                        <mat-icon>close</mat-icon>
-                    </button>
+                    <input matInput id="todoBody" #input placeholder="Search by Content"
+                           (input)="todoBody = $event.target.value">
                 </mat-form-field>
-                <button mat-raised-button id="submit" color="primary" #input type="button" (click)="loadService()">Submit</button>
+                <p>
+                    Show Complete
+                    <mat-checkbox>
+                        <input id="CheckTrue" type="checkbox" name="Status" checked
+                               ng-model="checked" ngInit="checked=true"
+                               (change)="CheckTrue = $event.target.checked">
+                    </mat-checkbox>
+                    |
+                    Show Incomplete
+                    <mat-checkbox>
+                        <input id="CheckFalse" type="checkbox" name="Status" checked
+                               (change)="CheckFalse = $event.target.checked">
+                    </mat-checkbox>
+                </p>
 
-                <mat-accordion *ngIf="todos; else todosError" >
-                <mat-expansion-panel #elem class="todos" [id]="todo.body" *ngFor="let todo of this.filterTodos(todoCategory, todoStatus)">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title  matTooltip="body: {{todo.body}}" >{{todo.category}}</mat-panel-title>
 
-                    </mat-expansion-panel-header>
-                    <mat-panel-description >Works for {{todo.owner}}</mat-panel-description>
-                     <mat-panel-description>Status: {{todo.status}} years old</mat-panel-description>
+                <mat-accordion *ngIf="todos; else todosError">
+                    <mat-expansion-panel #elem [id]="todo._id"
+                                         *ngFor="let todo of this.filterTodos
+                              (CheckTrue,CheckFalse,todoOwner,todoCategory,todoBody)">
 
-                </mat-expansion-panel>
+                        <mat-expansion-panel-header #elem [id]="todo._id">
+                            <mat-panel-title
+                                matTooltip="Owner: {{todo.owner}}">
+                                {{StatusImage(todo.status)}}{{todo.body.substring(0,30) + "..."}}
+                            </mat-panel-title>
+
+                        </mat-expansion-panel-header>
+
+
+                        <mat-panel-description>ID: {{todo._id}}</mat-panel-description>
+                        <mat-panel-description>Owner: {{todo.owner}}</mat-panel-description>
+                        <mat-panel-description>Category: {{todo.category}}</mat-panel-description>
+                        <mat-panel-description>Status: {{StatusRefactor(todo.status)}}</mat-panel-description>
+                        <hr>
+                        <mat-panel-description>Body: {{todo.body}}</mat-panel-description>
+
+
+                    </mat-expansion-panel>
                 </mat-accordion>
-                <!-- Maybe this should be a pop-up instead of just a text messstatus? Not sure. -->
+                <!-- Maybe this should be a pop-up instead of just a text message? Not sure. -->
                 <ng-template #todosError>
                     <mat-error>
                         There was a problem loading the todos. Possibly the server is down or perhaps there are network
@@ -50,3 +80,4 @@
         </mat-card>
     </div>
 </div>
+
