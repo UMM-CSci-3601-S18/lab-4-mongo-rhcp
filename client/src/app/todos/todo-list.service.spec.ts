@@ -36,8 +36,8 @@ describe('Todo list service: ', () => {
             category: 'Meditations',
         }
     ];
-    const mTodos: Todo[] = testTodos.filter(todo =>
-        todo.owner.toLowerCase().indexOf('m') !== -1
+    const yTodos: Todo[] = testTodos.filter(todo =>
+        todo.owner.toLowerCase().indexOf('y') !== -1
     );
 
     // We will need some url information from the todoListService to meaningfully test owner filtering;
@@ -90,27 +90,27 @@ describe('Todo list service: ', () => {
     });
 
     it('getTodos(todoOwner) adds appropriate param string to called URL', () => {
-        todoListService.getTodos('m').subscribe(
-            todos => expect(todos).toEqual(mTodos)
+        todoListService.getTodos('y').subscribe(
+            todos => expect(todos).toEqual(yTodos)
         );
 
-        const req = httpTestingController.expectOne(todoListService.baseUrl + '?owner=m&');
+        const req = httpTestingController.expectOne(todoListService.baseUrl + '?owner=y&');
         expect(req.request.method).toEqual('GET');
-        req.flush(mTodos);
+        req.flush(yTodos);
     });
 
     it('filterByOwner(todoOwner) deals appropriately with a URL that already had a owner', () => {
         currentlyImpossibleToGenerateSearchTodoUrl = todoListService.baseUrl + '?owner=f&something=k&';
         todoListService['todoUrl'] = currentlyImpossibleToGenerateSearchTodoUrl;
-        todoListService.filterByOwner('m');
-        expect(todoListService['todoUrl']).toEqual(todoListService.baseUrl + '?something=k&owner=m&');
+        todoListService.filterByOwner('y');
+        expect(todoListService['todoUrl']).toEqual(todoListService.baseUrl + '?something=k&owner=y&');
     });
 
     it('filterByOwner(todoOwner) deals appropriately with a URL that already had some filtering, but no owner', () => {
         currentlyImpossibleToGenerateSearchTodoUrl = todoListService.baseUrl + '?something=k&';
         todoListService['todoUrl'] = currentlyImpossibleToGenerateSearchTodoUrl;
-        todoListService.filterByOwner('m');
-        expect(todoListService['todoUrl']).toEqual(todoListService.baseUrl + '?something=k&owner=m&');
+        todoListService.filterByOwner('y');
+        expect(todoListService['todoUrl']).toEqual(todoListService.baseUrl + '?something=k&owner=y&');
     });
 
     it('filterByOwner(todoOwner) deals appropriately with a URL has the keyword owner, but nothing after the =', () => {
