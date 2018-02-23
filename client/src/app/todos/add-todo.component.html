@@ -7,10 +7,10 @@
             <mat-form-field>
                 <input matInput #input type="text" placeholder="Category" [(ngModel)]="newTodoCategory">
             </mat-form-field>
-            <mat-form-field>
+
                 <input id="CheckStatus" type="checkbox" name="Status"
                        (change)="newTodoStatus = $event.target.checked">
-            </mat-form-field>
+
             <mat-form-field>
                 <input matInput #input type="text" placeholder="Owner" [(ngModel)]="newTodoOwner">
             </mat-form-field>
