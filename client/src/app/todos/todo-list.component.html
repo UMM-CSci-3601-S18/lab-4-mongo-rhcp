@@ -26,6 +26,8 @@
                     <input matInput id="todoBody" #input placeholder="Search by Content"
                            (input)="todoBody = $event.target.value">
                 </mat-form-field>
+
+                <button mat-raised-button id="submit" color="primary" #input type="button" (click)="loadService()">Submit</button>
                 <p>
                     Show Complete
                     <mat-checkbox>
