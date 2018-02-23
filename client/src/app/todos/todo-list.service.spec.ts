@@ -136,7 +136,7 @@ describe('Todo list service: ', () => {
     it('adding a todo calls api/todos/new', () => {
         const Heracles_id = { '$oid': 'Heracles_id' };
         const newTodo: Todo = {
-            _id: '5189ser4y56se1g89sg614',
+            _id: '',
             owner: 'Heracles',
             status: true,
             body: 'Soup! Zeus-a-mercy, yes, ten thousand times.',
