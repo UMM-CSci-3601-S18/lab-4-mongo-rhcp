@@ -35,31 +35,27 @@ export class TodoListService {
     */
 
     filterByOwner(todoOwner?: string): void {
-        if(!(todoOwner == null || todoOwner == "")){
-            if (this.todoUrl.indexOf('owner=') !== -1){
-                //there was a previous search by owner that we need to clear
-                let start = this.todoUrl.indexOf('owner=');
-                let end = this.todoUrl.indexOf('&', start);
-                this.todoUrl = this.todoUrl.substring(0, start-1) + this.todoUrl.substring(end+1);
+        if (!(todoOwner == null || todoOwner === '')) {
+            if (this.parameterPresent('owner=') ) {
+                // there was a previous search by owner that we need to clear
+                this.removeParameter('owner=');
             }
-            if (this.todoUrl.indexOf('&') !== -1) {
-                //there was already some information passed in this url
+            if (this.todoUrl.indexOf('?') !== -1) {
+                // there was already some information passed in this url
                 this.todoUrl += 'owner=' + todoOwner + '&';
+            } else {
+                // this was the first bit of information to pass in the url
+                this.todoUrl += '?owner=' + todoOwner + '&';
             }
-            else {
-                //this was the first bit of information to pass in the url
-                this.todoUrl += "?owner=" + todoOwner + "&";
-            }
-        }
-        else {
-            //there was nothing in the box to put onto the URL... reset
-            if (this.todoUrl.indexOf('owner=') !== -1){
+        } else {
+            // there was nothing in the box to put onto the URL... reset
+            if (this.parameterPresent('owner=')) {
                 let start = this.todoUrl.indexOf('owner=');
-                let end = this.todoUrl.indexOf('&', start);
-                if (this.todoUrl.substring(start-1, start) === '?'){
-                    start = start-1
+                const end = this.todoUrl.indexOf('&', start);
+                if (this.todoUrl.substring(start - 1, start) === '?') {
+                    start = start - 1;
                 }
-                this.todoUrl = this.todoUrl.substring(0, start) + this.todoUrl.substring(end+1);
+                this.todoUrl = this.todoUrl.substring(0, start) + this.todoUrl.substring(end + 1);
             }
         }
     }
