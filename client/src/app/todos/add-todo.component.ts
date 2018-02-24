@@ -1,6 +1,5 @@
 import {Component, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
-import {TodoListService} from "./todo-list.service";
 import {Todo} from "./todo";
 
 
