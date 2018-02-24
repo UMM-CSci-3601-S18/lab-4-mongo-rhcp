@@ -143,7 +143,7 @@ describe('Todo list service: ', () => {
             category: 'Frogs',
         };
 
-        todoListService.addNewTodo(newTodo.category, newTodo.status, newTodo.category, newTodo.body).subscribe(
+        todoListService.addNewTodo(newTodo).subscribe(
             _id => {
                 expect(_id).toBe(Heracles_id);
             }
