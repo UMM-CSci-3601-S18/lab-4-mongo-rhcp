@@ -34,7 +34,9 @@ describe('todo list', () => {
     it('should type something in filter category box and check that it returned correct element', () => {
         page.navigateTo();
         page.typeACategory('video games');
-        expect(page.getUniquetodo('58895985c1849992336c219b')).toEqual('Fry');
+        expect(page.getUniquetodo('Ipsum esse est ullamco magna tempor ' +
+            'anim laborum non officia deserunt veniam commodo. Aute minim ' +
+            'incididunt ex commodo.')).toEqual('Fry');
 
     });
 
@@ -42,7 +44,9 @@ describe('todo list', () => {
     it('should type something in filter body box and check that it returned correct element', () => {
         page.navigateTo();
         page.typeABody('tempor');
-        expect(page.getUniquetodo('58895985a22c04e761776d54')).toEqual('Blanche');
+        expect(page.getUniquetodo('In sunt ex non tempor cillum commodo ' +
+            'amet incididunt anim qui commodo quis. Cillum non labore ex sint ' +
+            'esse.')).toEqual('Blanche');
 
 
         // Filter by status: Incomplete
