@@ -45,7 +45,7 @@
 
 
                 <mat-accordion *ngIf="todos; else todosError">
-                    <mat-expansion-panel #elem [id]="todo._id"
+                    <mat-expansion-panel #elem [id]="todo.body"
                                          *ngFor="let todo of this.filterTodos
                               (CheckTrue,CheckFalse,todoCategory,todoBody)">
 
