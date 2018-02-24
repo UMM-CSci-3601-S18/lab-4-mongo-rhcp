@@ -36,7 +36,7 @@ describe('todo list', () => {
         page.typeACategory('video games');
         expect(page.getUniquetodo('Ipsum esse est ullamco magna tempor ' +
             'anim laborum non officia deserunt veniam commodo. Aute minim ' +
-            'incididunt ex commodo.')).toEqual('Fry');
+            'incididunt ex commodo.')).toEqual('Ipsum esse est ullamco magna t...');
 
     });
 
@@ -46,7 +46,7 @@ describe('todo list', () => {
         page.typeABody('tempor');
         expect(page.getUniquetodo('In sunt ex non tempor cillum commodo ' +
             'amet incididunt anim qui commodo quis. Cillum non labore ex sint ' +
-            'esse.')).toEqual('Blanche');
+            'esse.')).toEqual('In sunt ex non tempor cillum c...');
 
 
         // Filter by status: Incomplete
