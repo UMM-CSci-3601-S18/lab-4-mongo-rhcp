@@ -27,7 +27,7 @@ describe('todo list', () => {
 
     it('should get and highlight todos title attribute ', () => {
         page.navigateTo();
-        expect(page.gettodoTitle()).toEqual('todos');
+        expect(page.gettodoTitle()).toEqual('Todos');
     });
 
     // Filter by category text box

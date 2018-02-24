@@ -65,9 +65,9 @@ export class todoPage {
         input.click();
     }
 
-    getUniquetodo(body: string) {
-        const todo = element(by.id(body)).getText();
-        this.highlightElement(by.id(body));
+    getUniquetodo(_id: string) {
+        const todo = element(by.id(_id)).getText();
+        this.highlightElement(by.id(_id));
 
         return todo;
     }
