@@ -27,10 +27,16 @@ export class todoPage {
         return title;
     }
 
-    typeACategory(Category: string) {
+    typeACategory(category: string) {
         const input = element(by.id('todoCategory'));
         input.click();
-        input.sendKeys(Category);
+        input.sendKeys(category);
+    }
+
+    typeABody(body: string) {
+        const input = element(by.id('todoBody'));
+        input.click();
+        input.sendKeys(body);
     }
 
     selectUpKey() {
@@ -50,12 +56,12 @@ export class todoPage {
     }
 
     gettodoByFalseStatus() {
-        let input = element(by.id('CheckTrue'));
+        const input = element(by.id('CheckTrue'));
         input.click();
     }
 
     gettodoByTrueStatus() {
-        let input = element(by.id('CheckFalse'));
+        const input = element(by.id('CheckFalse'));
         input.click();
     }
 
