@@ -4,25 +4,30 @@
             <mat-card-title>New Todo</mat-card-title>
                 <mat-divider></mat-divider>
             <mat-card-content>
-            <mat-form-field>
-                <input matInput #input type="text" placeholder="Category" [(ngModel)]="newTodoCategory">
-            </mat-form-field>
 
-                <input id="CheckStatus" type="checkbox" name="Status"
-                       (change)="newTodoStatus = $event.target.checked">
+                <mat-form-field>
+                    <input matInput #input id="ownerField" placeholder="Owner" [(ngModel)]="data.todo.owner">
+                </mat-form-field>
 
-            <mat-form-field>
-                <input matInput #input type="text" placeholder="Owner" [(ngModel)]="newTodoOwner">
-            </mat-form-field>
-            <mat-form-field>
-                <input matInput #input type="text" placeholder="Body" [(ngModel)]="newTodoBody">
-            </mat-form-field>
+                Complete <input #input id="CompleteField" type="radio" name="Status"
+                           [(ngModel)]="data.todo.status">
+                |
+                Incomplete <input #input id="IncompleteField" type="radio" name="Status" checked>
 
-                <button mat-raised-button color="primary" #input type="button"
-                    (click)="this.addNewTodo(newTodoCategory, newTodoStatus, newTodoOwner, newTodoBody)">Add Todo</button>
+                <mat-form-field>
+                    <input matInput #input id="categoryField" placeholder="Category" [(ngModel)]="data.todo.category">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput #input id="bodyField" placeholder="Body" [(ngModel)]="data.todo.body">
+                </mat-form-field>
+
+                <button mat-button id="confirmAddTodoButton" [mat-dialog-close]="data.todo"
+                        type="button">Add todo</button>
+
             </mat-card-content>
         </mat-card>
-        <button mat-raised-button (click)="onNoClick()" type="button">Exit</button>
+        <button mat-raised-button id="exitWithoutAddingButton" (click)="onNoClick()" type="button">Exit</button>
     </div>
 </div>
 
