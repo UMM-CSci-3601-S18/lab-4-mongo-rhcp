@@ -5,9 +5,13 @@ import com.mongodb.*;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.Filters;
 import com.mongodb.util.JSON;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -88,23 +92,28 @@ public class TodoController {
         return JSON.serialize(matchingTodos);
     }
 
+
+    Block<Document> printBlock = new Block<Document>() {
+        @Override
+        public void apply(final Document document) {
+            System.out.println(document.toJson());
+        }
+    };
+
     public String getTodoSummary(Map<String, String[]> queryParams) {
 
-        Document filterDoc = new Document();
+        Document summaryDoc = new Document();
+
+        todoCollection.aggregate(
+            Arrays.asList(
+                Aggregates.group(Filters.eq("status","true"))
+            )
+        );
 
 
-        if (queryParams.containsKey("owner")) {
-            String targetContent = (queryParams.get("owner")[0]);
-            Document contentRegQuery = new Document();
-            contentRegQuery.append("$regex", targetContent);
-            contentRegQuery.append("$options", "i");
-            filterDoc = filterDoc.append("owner", contentRegQuery);
-        }
 
-        //FindIterable comes from mongo, Document comes from Gson
-        FindIterable<Document> todoSummary = todoCollection.find(filterDoc);
 
-        return JSON.serialize(todoSummary);
+        return JSON.serialize(summaryDoc);
     }
 
 
