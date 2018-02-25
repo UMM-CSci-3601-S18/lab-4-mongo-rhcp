@@ -83,7 +83,7 @@ describe('User list', () => {
         });
         page.clickClearCompanySearch();
         page.getUsers().then(function(users) {
-            expect(users.length).toBe(10);
+            expect(users.length).toBe(11);
         });
         page.getCompany('ne');
         page.getUsers().then(function(users) {
