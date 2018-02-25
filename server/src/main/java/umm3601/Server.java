@@ -8,6 +8,7 @@ import umm3601.user.UserController;
 import umm3601.user.UserRequestHandler;
 import umm3601.todo.TodoController;
 import umm3601.todo.TodoRequestHandler;
+import umm3601.todo.TodoSummary;
 
 import java.io.IOException;
 
@@ -75,6 +76,7 @@ public class Server {
         get("api/todos", todoRequestHandler::getTodos);
         get("api/todos/:id", todoRequestHandler::getTodoJSON);
         post("api/todos/new", todoRequestHandler::addNewTodo);
+        get("api/todoSummary", todoRequestHandler::getTodoSummary);
 
         // An example of throwing an unhandled exception so you can see how the
         // Java Spark debugger displays errors like this.

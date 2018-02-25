@@ -88,6 +88,25 @@ public class TodoController {
         return JSON.serialize(matchingTodos);
     }
 
+    public String getTodoSummary(Map<String, String[]> queryParams) {
+
+        Document filterDoc = new Document();
+
+
+        if (queryParams.containsKey("owner")) {
+            String targetContent = (queryParams.get("owner")[0]);
+            Document contentRegQuery = new Document();
+            contentRegQuery.append("$regex", targetContent);
+            contentRegQuery.append("$options", "i");
+            filterDoc = filterDoc.append("owner", contentRegQuery);
+        }
+
+        //FindIterable comes from mongo, Document comes from Gson
+        FindIterable<Document> todoSummary = todoCollection.find(filterDoc);
+
+        return JSON.serialize(todoSummary);
+    }
+
 
     /**
      * Helper method which appends received todo information to the to-be added document
