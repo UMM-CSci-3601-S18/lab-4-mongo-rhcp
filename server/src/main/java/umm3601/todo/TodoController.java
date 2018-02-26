@@ -98,27 +98,15 @@ public class TodoController {
         return JSON.serialize(matchingTodos);
     }
 
-    Block<Document> printBlock = new Block<Document>() {
-        @Override
-        public void apply(final Document document) {
-            System.out.println(document.toJson());
-        }
-    };
 
     public String getTodoSummary() {
 
         float total = todoCollection.count();
-       /* float count1 = parseInt(new Document()
-            .append("",todoCollection.aggregate(
-                Arrays.asList(
-                    Aggregates.match(Filters.eq("status",true)),
-                    Aggregates.group("$status",
-                        Accumulators.sum("count", 1)
-                    )
-                )
-                )
-            ).get("count").toString())
-        ; */
+
+        Document countdoc = new Document();
+
+      //  long totalFilteredRecords = todoCollection.count("status", true);
+
        // float percent1 = count1 / total;
 
         //^^^ need to get item out of bson, then parseInt
