@@ -1,21 +1,27 @@
 package umm3601.todo;
 
-import com.google.gson.Gson;
-import com.mongodb.*;
-import com.mongodb.client.FindIterable;
+import com.mongodb.Block;
+import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.Accumulators;
+import com.mongodb.client.model.Projections;
+import com.mongodb.client.model.Filters;
+import org.bson.Document;
+import com.google.gson.Gson;
+import com.mongodb.*;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
 import com.mongodb.util.JSON;
 import org.bson.Document;
 import org.bson.types.ObjectId;
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
 import static com.mongodb.client.model.Filters.eq;
+import static java.lang.Integer.parseInt;
 
 /**
  * Controller that manstatuss requests for info about todos.
@@ -93,24 +99,35 @@ public class TodoController {
     }
 
 
-    Block<Document> printBlock = new Block<Document>() {
-        @Override
-        public void apply(final Document document) {
-            System.out.println(document.toJson());
-        }
-    };
 
-    public String getTodoSummary(Map<String, String[]> queryParams) {
+    public String getTodoSummary() {
+
+        float total = todoCollection.count();
+       // float count1 = parseInt(Accumulators.sum("count", 1).toString());
+       // float percent1 = count1 / total;
+
+        //^^^ need to get item out of bson, then parseInt
 
         Document summaryDoc = new Document();
-
-        todoCollection.aggregate(
-            Arrays.asList(
-                Aggregates.group(Filters.eq("status","true"))
+        summaryDoc.append("percentToDosComplete",
+            todoCollection.aggregate(
+                Arrays.asList(
+                    Aggregates.match(Filters.eq("status",true)),
+                    Aggregates.group("$status",
+                       Accumulators.sum("count", 1),
+                        Accumulators.avg("percentage", total)
+                    )
+                )
             )
         );
-
-
+        summaryDoc.append("categoriesPercentComplete", new Document()
+            .append("groceries", "")
+            .append("software design", "")
+        );
+        summaryDoc.append("ownersPercentComplete", new Document()
+            .append("Blanch", "")
+            .append("Barry", "")
+        );
 
 
         return JSON.serialize(summaryDoc);

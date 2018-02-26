@@ -8,7 +8,6 @@ import umm3601.user.UserController;
 import umm3601.user.UserRequestHandler;
 import umm3601.todo.TodoController;
 import umm3601.todo.TodoRequestHandler;
-import umm3601.todo.TodoSummary;
 
 import java.io.IOException;
 

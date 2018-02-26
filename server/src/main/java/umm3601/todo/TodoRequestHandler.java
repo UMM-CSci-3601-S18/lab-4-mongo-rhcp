@@ -64,7 +64,7 @@ public class TodoRequestHandler {
     public String getTodoSummary(Request req, Response res)
     {
         res.type("application/json");
-        return todoController.getTodoSummary(req.queryMap().toMap());
+        return todoController.getTodoSummary();
     }
 
     /**Method called from Server when the 'api/todos/new'endpoint is recieved.
