@@ -102,8 +102,19 @@ public class TodoController {
     public String getTodoSummary() {
 
         float total = todoCollection.count();
+        float percentTrue = 100 / total;
 
         Document countdoc = new Document();
+
+        /* todoCollection.aggregate(
+                Arrays.asList(
+                    Aggregates.group("$status",
+                        Accumulators.avg("percentage", total)
+                    )
+                )
+            )
+        );
+        */
 
       //  long totalFilteredRecords = todoCollection.count("status", true);
 
@@ -112,22 +123,23 @@ public class TodoController {
         //^^^ need to get item out of bson, then parseInt
 
      Document summaryDoc = new Document();
-        summaryDoc.append("percentToDosComplete",
+        summaryDoc.append("Total # of Todos",total);
+        summaryDoc.append("Total Todos Complete",
             todoCollection.aggregate(
                 Arrays.asList(
                     Aggregates.match(Filters.eq("status",true)),
                     Aggregates.group("$status",
                        Accumulators.sum("count", 1),
-                        Accumulators.avg("percentage", total)
+                        Accumulators.sum("percent", percentTrue)
                     )
                 )
             )
         );
-        summaryDoc.append("categoriesPercentComplete", new Document()
+        summaryDoc.append("Todos Complete by Category", new Document()
             .append("groceries", "")
             .append("software design", "")
         );
-        summaryDoc.append("ownersPercentComplete", new Document()
+        summaryDoc.append("Todos Complete by Owner", new Document()
             .append("Blanch", "")
             .append("Barry", "")
         );

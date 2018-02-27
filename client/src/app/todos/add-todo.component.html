@@ -8,12 +8,12 @@
                 <mat-form-field>
                     <input matInput #input id="ownerField" placeholder="Owner" [(ngModel)]="data.todo.owner">
                 </mat-form-field>
-
+                <p>
                 Complete <input #input id="CompleteField" type="radio" name="Status"
                            [(ngModel)]="data.todo.status">
                 |
                 Incomplete <input #input id="IncompleteField" type="radio" name="Status" checked>
-
+                </p>
                 <mat-form-field>
                     <input matInput #input id="categoryField" placeholder="Category" [(ngModel)]="data.todo.category">
                 </mat-form-field>
