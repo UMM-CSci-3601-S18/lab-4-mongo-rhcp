@@ -4,10 +4,7 @@ import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.Accumulators;
-import com.mongodb.client.model.Projections;
-import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.*;
 import org.bson.Document;
 import com.google.gson.Gson;
 import com.mongodb.*;
@@ -98,43 +95,20 @@ public class TodoController {
         return JSON.serialize(matchingTodos);
     }
 
-    public float percent(String tag){
-      float tagtotal = todoCollection.count();
-      float smallnumber = 100 / tagtotal;
-      return smallnumber;
-    };
 
     public String getTodoSummary() {
 
         float total = todoCollection.count();
         float percent = 100 / total;
 
-        Document countdoc = new Document();
-
-        /* todoCollection.aggregate(
-                Arrays.asList(
-                    Aggregates.group("$status",
-                        Accumulators.avg("percentage", total)
-                    )
-                )
-            )
-        );
-        */
-
-      //  long totalFilteredRecords = todoCollection.count("status", true);
-
-       // float percent1 = count1 / total;
-
-        //^^^ need to get item out of bson, then parseInt
-
-     Document summaryDoc = new Document();
+        Document summaryDoc = new Document();
         summaryDoc.append("Total # of Todos",total);
         summaryDoc.append("Total Todos Complete",
             todoCollection.aggregate(
                 Arrays.asList(
                     Aggregates.match(Filters.eq("status",true)),
                     Aggregates.group("$status",
-                       Accumulators.sum("count", 1),
+                        Accumulators.sum("count", 1),
                         Accumulators.sum("percent", percent)
                     )
                 )
@@ -158,13 +132,12 @@ public class TodoController {
                     Aggregates.match(Filters.eq("status",true)),
                     Aggregates.group("$owner",
                         Accumulators.sum("count", 1),
-                        Accumulators.sum("percent", percent("$owner"))
+                        Accumulators.sum("percent", percent)
 
                     )
                 )
             )
         );
-
 
         return JSON.serialize(summaryDoc);
     }
