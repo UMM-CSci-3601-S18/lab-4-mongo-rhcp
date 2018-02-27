@@ -98,11 +98,16 @@ public class TodoController {
         return JSON.serialize(matchingTodos);
     }
 
+    public float percent(String tag){
+      float tagtotal = todoCollection.count();
+      float smallnumber = 100 / tagtotal;
+      return smallnumber;
+    };
 
     public String getTodoSummary() {
 
         float total = todoCollection.count();
-        float percentTrue = 100 / total;
+        float percent = 100 / total;
 
         Document countdoc = new Document();
 
@@ -130,18 +135,34 @@ public class TodoController {
                     Aggregates.match(Filters.eq("status",true)),
                     Aggregates.group("$status",
                        Accumulators.sum("count", 1),
-                        Accumulators.sum("percent", percentTrue)
+                        Accumulators.sum("percent", percent)
                     )
                 )
             )
         );
-        summaryDoc.append("Todos Complete by Category", new Document()
-            .append("groceries", "")
-            .append("software design", "")
+        summaryDoc.append("Todos Complete by Category",
+            todoCollection.aggregate(
+                Arrays.asList(
+                    Aggregates.match(Filters.eq("status",true)),
+                    Aggregates.group("$category",
+                        Accumulators.sum("count", 1),
+                        Accumulators.sum("percent", percent)
+
+                    )
+                )
+            )
         );
-        summaryDoc.append("Todos Complete by Owner", new Document()
-            .append("Blanch", "")
-            .append("Barry", "")
+        summaryDoc.append("Todos Complete by Owner",
+            todoCollection.aggregate(
+                Arrays.asList(
+                    Aggregates.match(Filters.eq("status",true)),
+                    Aggregates.group("$owner",
+                        Accumulators.sum("count", 1),
+                        Accumulators.sum("percent", percent("$owner"))
+
+                    )
+                )
+            )
         );
 
 
