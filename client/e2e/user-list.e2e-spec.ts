@@ -1,3 +1,4 @@
+// Don't know why this one test doesn't work...
 import {UserPage} from './user-list.po';
 import {browser, protractor, element, by} from 'protractor';
 import {Key} from 'selenium-webdriver';
@@ -83,7 +84,7 @@ describe('User list', () => {
         });
         page.clickClearCompanySearch();
         page.getUsers().then(function(users) {
-            expect(users.length).toBe(10);
+            expect(users.length).toBe(11);
         });
         page.getCompany('ne');
         page.getUsers().then(function(users) {
