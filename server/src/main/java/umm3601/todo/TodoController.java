@@ -1,17 +1,24 @@
 package umm3601.todo;
 
+import com.mongodb.Block;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.*;
+import org.bson.Document;
 import com.google.gson.Gson;
 import com.mongodb.*;
 import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import com.mongodb.util.JSON;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
 import static com.mongodb.client.model.Filters.eq;
+import static java.lang.Integer.parseInt;
 
 /**
  * Controller that manstatuss requests for info about todos.
@@ -86,6 +93,53 @@ public class TodoController {
         FindIterable<Document> matchingTodos = todoCollection.find(filterDoc);
 
         return JSON.serialize(matchingTodos);
+    }
+
+
+    public String getTodoSummary() {
+
+        float total = todoCollection.count();
+        float percent = 100 / total;
+
+        Document summaryDoc = new Document();
+        summaryDoc.append("Total # of Todos",total);
+        summaryDoc.append("Total Todos Complete",
+            todoCollection.aggregate(
+                Arrays.asList(
+                    Aggregates.match(Filters.eq("status",true)),
+                    Aggregates.group("$status",
+                        Accumulators.sum("count", 1),
+                        Accumulators.sum("percent", percent)
+                    )
+                )
+            )
+        );
+        summaryDoc.append("Todos Complete by Category",
+            todoCollection.aggregate(
+                Arrays.asList(
+                    Aggregates.match(Filters.eq("status",true)),
+                    Aggregates.group("$category",
+                        Accumulators.sum("count", 1),
+                        Accumulators.sum("percent", percent)
+
+                    )
+                )
+            )
+        );
+        summaryDoc.append("Todos Complete by Owner",
+            todoCollection.aggregate(
+                Arrays.asList(
+                    Aggregates.match(Filters.eq("status",true)),
+                    Aggregates.group("$owner",
+                        Accumulators.sum("count", 1),
+                        Accumulators.sum("percent", percent)
+
+                    )
+                )
+            )
+        );
+
+        return JSON.serialize(summaryDoc);
     }
 
 

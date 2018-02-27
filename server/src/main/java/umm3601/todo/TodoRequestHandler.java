@@ -61,6 +61,11 @@ public class TodoRequestHandler {
         return todoController.getTodos(req.queryMap().toMap());
     }
 
+    public String getTodoSummary(Request req, Response res)
+    {
+        res.type("application/json");
+        return todoController.getTodoSummary();
+    }
 
     /**Method called from Server when the 'api/todos/new'endpoint is recieved.
      * Gets specified to-do info from request and calls addNewTodo helper method

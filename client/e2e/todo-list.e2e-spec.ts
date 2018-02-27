@@ -48,29 +48,68 @@ describe('todo list', () => {
             'amet incididunt anim qui commodo quis. Cillum non labore ex sint ' +
             'esse.')).toEqual('In sunt ex non tempor cillum c...');
 
+    });
 
-        // Filter by status: Incomplete
-        it('should click on the complete button one time and check that it returned incomplete todos', () => {
-            page.navigateTo();
-            page.gettodoByFalseStatus();
-            expect(page.getUniquetodo('')).toEqual('');
+    // Filter by body text box and category text box
+    it('should type something in filter body box and filter category box and check that it returned correct element', () => {
+        page.navigateTo();
+        page.typeABody('tempor');
+        page.typeACategory('homework');
+        expect(page.getUniquetodo('Excepteur irure et mollit esse laboris ad ' +
+            'tempor ullamco. Eiusmod nostrud qui veniam adipisicing aliqua voluptate ' +
+            'reprehenderit ut amet excepteur.')).toEqual('Excepteur irure et mollit esse...');
 
-        });
+    });
 
-        // Filter by status: Complete
-        it('should click on the incomplete button one time and check that it returned complete todos', () => {
-            page.navigateTo();
-            page.gettodoByTrueStatus();
-            expect(page.getUniquetodo('')).toEqual('');
+    // Filter by status: Incomplete
+    it('should click on the complete button one time and check that it returned incomplete todos', () => {
+        page.navigateTo();
+        page.gettodoByFalseStatus();
+        expect(page.getUniquetodo('Proident cupidatat exercitation id ' +
+            'ullamco magna do qui aliquip id. Eiusmod labore non nostrud culpa ' +
+            'duis incididunt incididunt esse occaecat amet officia.')).toEqual('Proident cupidatat exercitatio...');
 
-        });
+    });
+
+    // Filter by status: Complete
+    it('should click on the incomplete button one time and check that it returned complete todos', () => {
+        page.navigateTo();
+        page.gettodoByTrueStatus();
+        expect(page.getUniquetodo('Nostrud culpa ut consectetur nulla ' +
+            'laboris anim sunt exercitation tempor. Culpa officia eu sint magna ' +
+            'reprehenderit ex pariatur tempor aliquip cupidatat qui amet consectetur.')).toEqual('✔ Nostrud culpa ut consectetur n...');
+
+    });
+
+    // Filter by body text box, category text box, status: complete
+    it('should type something in filter body box, filter category box and click the incomplete button one time and then check that it returned correct element', () => {
+        page.navigateTo();
+        page.typeABody('sunt');
+        page.typeACategory('software design');
+        page.gettodoByTrueStatus();
+        expect(page.getUniquetodo('Nostrud proident occaecat in occaecat in ' +
+            'anim cupidatat culpa velit mollit exercitation dolor incididunt ut. ' +
+            'Sint incididunt consectetur velit sunt officia aliquip.')).toEqual('✔ Nostrud proident occaecat in o...');
+
+    });
+
+    // Filter by body text box, category text box, status: incomplete
+    it('should type something in filter body box, filter category box, and click the complete button one time and then check that it returned correct element', () => {
+        page.navigateTo();
+        page.typeABody('sunt');
+        page.typeACategory('software design');
+        page.gettodoByFalseStatus();
+        expect(page.getUniquetodo('Lorem mollit consequat fugiat amet aute pariatur ' +
+            'dolore ullamco cupidatat. Aute elit consequat cupidatat sunt.')).toEqual('Lorem mollit consequat fugiat ...');
+
+    });
+
 
         it('Should open the expansion panel and get the owner', () => {
             page.navigateTo();
-            page.getOwner('DATA');
-            browser.actions().sendKeys(Key.ENTER).perform();
+            page.getOwner('F');
 
-            expect(page.getUniquetodo('')).toEqual('');
+            expect(page.getUniquetodo('Ullamco irure laborum magna dolor non. Anim occaecat adipisicing cillum eu magna in.')).toEqual('✔ Ullamco irure laborum magna do...');
 
             // This is just to show that the panels can be opened
             browser.actions().sendKeys(Key.TAB).perform();
@@ -79,14 +118,15 @@ describe('todo list', () => {
 
         it('Should allow us to filter todos based on owner', () => {
             page.navigateTo();
-            page.getOwner('Fry');
+            page.getOwner('B');
             page.gettodos().then(function (todos) {
-                expect(todos.length).toBe(61);
+                expect(todos.length).toBe(94);
             });
-            expect(page.getUniquetodo('')).toEqual('Fry');
+            expect(page.getUniquetodo('In sunt ex non tempor cillum commodo amet incididunt ' +
+                'anim qui commodo quis. Cillum non labore ex sint esse.')).toEqual('In sunt ex non tempor cillum c...');
             expect(page.getUniquetodo('')).toEqual('');
-            expect(page.getUniquetodo('kittypage@surelogic.com')).toEqual('Fry');
-            expect(page.getUniquetodo('margueritenorton@recognia.com')).toEqual('Fry');
+            expect(page.getUniquetodo('')).toEqual('');
+            expect(page.getUniquetodo('')).toEqual('');
         });
 
         it('Should allow us to clear a search for owner and then still successfully search again', () => {
@@ -174,4 +214,4 @@ describe('todo list', () => {
             element(by.id('exitWithoutAddingButton')).click();
         });
     });
-});
+

@@ -1,27 +1,30 @@
-<div class="add-todo" layout-gt-sm="row">
+<div layout-gt-sm="row">
     <div flex-gt-sm="80" flex-offset-gt-sm="10">
         <mat-card>
             <mat-card-title>New Todo</mat-card-title>
-            <mat-divider></mat-divider>
+                <mat-divider></mat-divider>
             <mat-card-content>
-                <mat-form-field>
-                    <input matInput id="categoryField" #input placeholder="Category" [(ngModel)]="data.todo.category">
-                </mat-form-field>
-
-                <mat-checkbox>
-                   Status <input id="statusField" type="checkbox" name="Status"
-                                 [(ngModel)]="data.todo.status"
-                                 (change)="todoStatus = $event.target.checked">
-                </mat-checkbox>
 
                 <mat-form-field>
-                    <input matInput id="ownerField" #input placeholder="Owner" [(ngModel)]="data.todo.owner">
+                    <input matInput #input id="ownerField" placeholder="Owner" [(ngModel)]="data.todo.owner">
                 </mat-form-field>
+                <p>
+                Complete <input #input id="CompleteField" type="radio" name="Status"
+                           [(ngModel)]="data.todo.status">
+                |
+                Incomplete <input #input id="IncompleteField" type="radio" name="Status" checked>
+                </p>
                 <mat-form-field>
-                    <input matInput id="bodyField" #input placeholder="Body" [(ngModel)]="data.todo.body">
+                    <input matInput #input id="categoryField" placeholder="Category" [(ngModel)]="data.todo.category">
                 </mat-form-field>
-                <!-- [mat-dialog-close]="data.todo" causes the data.todo object to be returned when the dialog is closed. -->
-                <button mat-button id="confirmAddTodoButton" [mat-dialog-close]="data.todo" type="button">Add todo</button>
+
+                <mat-form-field>
+                    <input matInput #input id="bodyField" placeholder="Body" [(ngModel)]="data.todo.body">
+                </mat-form-field>
+
+                <button mat-button id="confirmAddTodoButton" [mat-dialog-close]="data.todo"
+                        type="button">Add todo</button>
+
             </mat-card-content>
         </mat-card>
         <button mat-raised-button id="exitWithoutAddingButton" (click)="onNoClick()" type="button">Exit</button>
