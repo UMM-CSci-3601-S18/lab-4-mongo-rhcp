@@ -82,13 +82,13 @@ export class todoPage {
     }
 
     buttonExists(): promise.Promise<boolean> {
-        this.highlightElement(by.id('addNewtodo'));
-        return element(by.id('addNewtodo')).isPresent();
+        this.highlightElement(by.id('addNewTodo'));
+        return element(by.id('addNewTodo')).isPresent();
     }
 
-    clickAddtodoButton(): promise.Promise<void> {
-        this.highlightElement(by.id('addNewtodo'));
-        return element(by.id('addNewtodo')).click();
+    clickAddTodoButton(): promise.Promise<void> {
+        this.highlightElement(by.id('addNewTodo'));
+        return element(by.id('addNewTodo')).click();
     }
 
 }

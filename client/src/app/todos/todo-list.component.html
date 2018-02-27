@@ -26,6 +26,11 @@
                     <input matInput id="todoBody" #input placeholder="Search by Content"
                            (input)="todoBody = $event.target.value">
                 </mat-form-field>
+                <mat-form-field>
+                    <input matInput id="todoId" #input placeholder="Search by ID"
+                           (input)="todoId = $event.target.value" todo._id >
+                </mat-form-field>
+
 
                 <button mat-raised-button id="submit" color="primary" #input type="button" (click)="loadService()">Submit</button>
                 <p>

@@ -120,7 +120,7 @@ describe('todo list', () => {
             page.navigateTo();
             page.getOwner('B');
 
-            //Blanche
+            //BlancheDust
             expect(page.getUniquetodo('In sunt ex non tempor cillum commodo amet incididunt ' +
                 'anim qui commodo quis. Cillum non labore ex sint esse.')).toEqual('In sunt ex non tempor cillum c...');
             //Barry
@@ -141,39 +141,25 @@ describe('todo list', () => {
         it('Should open a dialog box when add todo button is clicked', () => {
             page.navigateTo();
             expect(element(by.css('add-todo')).isPresent()).toBeFalsy('There should not be a modal window yet');
-            element(by.id('addNewtodo')).click();
+            element(by.id('addNewTodo')).click();
             expect(element(by.css('add-todo')).isPresent()).toBeTruthy('There should be a modal window now');
         });
 
     it('Should actually add the todo with the information we put in the fields', () => {
         page.navigateTo();
-        page.clickAddtodoButton();
-        element(by.id('categoryField')).sendKeys('video games');
-        // Need to use backspace because the default value is -1. If that changes, this will change too.
-        element(by.id('CheckTrue'));
+        page.clickAddTodoButton();
         element(by.id('ownerField')).sendKeys('Roym');
+        element(by.id('CheckTrue'));
+        element(by.id('categoryField')).sendKeys('video games');
         element(by.id('bodyField')).sendKeys('I will avenge my family, even if it means destroying myself');
-        element(by.id('confirmAddtodoButton')).click();
+        element(by.id('confirmAddTodoButton')).click();
         // This annoying delay is necessary, otherwise it's possible that we execute the `expect`
         // line before the add todo has been fully processed and the new todo is available
         // in the list.
         setTimeout(() => {
-            expect(page.getUniquetodo('I will avenge my family, even if it means destroying myself')).toMatch('Roym.*'); // toEqual('Roym');
+            expect(page.getUniquetodo('I will avenge my family, even if it means destroying myself'))
+                .toMatch('I will avenge my family, even ...');
         }, 10000);
-    });
-
-    it('Should allow us to put information into the fields of the add todo dialog', () => {
-        page.navigateTo();
-        page.clickAddtodoButton();
-        expect(element(by.id('categoryField')).isPresent()).toBeTruthy('There should be a category field');
-        element(by.id('categoryField')).sendKeys('homework');
-        expect(element(by.id('statusField')).isPresent()).toBeTruthy('There should be a status field');
-        element(by.id('CheckTrue'));
-        expect(element(by.id('ownerField')).isPresent()).toBeTruthy('There should be an owner field');
-        element(by.id('ownerField')).sendKeys('Rae');
-        expect(element(by.id('bodyField')).isPresent()).toBeTruthy('There should be a body field');
-        element(by.id('bodyField')).sendKeys('Hi, Im Royms younger sister, why didnt he save me?');
-        element(by.id('exitWithoutAddingButton')).click();
     });
 
 });
