@@ -17,7 +17,9 @@
                 <input matInput #input id="emailField" placeholder="Email" [(ngModel)]="data.user.email">
             </mat-form-field>
                 <!-- [mat-dialog-close]="data.user" causes the data.user object to be returned when the dialog is closed. -->
-                <button mat-button id="confirmAddUserButton" [mat-dialog-close]="data.user" type="button">Add user</button>
+                <button mat-button id="confirmAddUserButton" [mat-dialog-close]="data.user"
+                        type="button">Add user</button>
+
             </mat-card-content>
         </mat-card>
         <button mat-raised-button id="exitWithoutAddingButton" (click)="onNoClick()" type="button">Exit</button>

@@ -32,7 +32,6 @@
                     Show Complete
                     <mat-checkbox>
                         <input id="CheckTrue" type="checkbox" name="Status" checked
-                               ng-model="checked" ngInit="checked=true"
                                (change)="CheckTrue = $event.target.checked">
                     </mat-checkbox>
                     |
@@ -58,7 +57,6 @@
                         </mat-expansion-panel-header>
 
 
-                        <mat-panel-description>ID: {{todo._id}}</mat-panel-description>
                         <mat-panel-description>Owner: {{todo.owner}}</mat-panel-description>
                         <mat-panel-description>Category: {{todo.category}}</mat-panel-description>
                         <mat-panel-description>Status: {{StatusRefactor(todo.status)}}</mat-panel-description>

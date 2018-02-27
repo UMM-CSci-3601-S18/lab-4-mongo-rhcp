@@ -2,7 +2,6 @@ import {Component, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
 import {Todo} from "./todo";
 
-
 @Component({
     selector: 'add-todo.component',
     templateUrl: 'add-todo.component.html',
